@@ -2,16 +2,19 @@ import os
 import shutil
 import tensorflow as tf
 
+from pathlib import Path
+
 
 class IMDB:
 
     def __init__(self):
-        self.dataset_dir = None
-        self.train_dir = None
+        self.dataset = None
         self.raw_train_ds = None
         self.raw_val_ds = None
         self.raw_test_ds = None
-        self.dataset = None
+        self.dataset_dir = None
+        self.train_dir = None
+        self.test_dir = None
 
         self.load_datasets()
         self.split_datasets()
@@ -23,10 +26,11 @@ class IMDB:
 
         url = "https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz"
 
-        dataset_path = os.path.join(os.path.join(os.path.dirname(os.getcwd()), 'Data'), 'Datasets')
+        dataset_path = os.path.join(os.path.join(os.path.join(Path(os.getcwd()).parent.parent, 'Data'), 'Datasets'))
+        print(dataset_path)
 
         self.dataset = tf.keras.utils.get_file("aclImdb_v1", url,
-                                               untar=True, cache_dir=os.path.join(os.getcwd(), dataset_path),
+                                               untar=True, cache_dir=dataset_path,
                                                cache_subdir='')
 
         """
