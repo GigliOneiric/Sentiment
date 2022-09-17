@@ -6,6 +6,8 @@ import tensorflow as tf
 class IMDB:
 
     def __init__(self):
+        self.dataset_dir = None
+        self.train_dir = None
         self.raw_train_ds = None
         self.raw_val_ds = None
         self.raw_test_ds = None
@@ -21,22 +23,25 @@ class IMDB:
 
         url = "https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz"
 
+        dataset_path = os.path.join(os.path.join(os.path.dirname(os.getcwd()), 'Data'), 'Datasets')
+
         self.dataset = tf.keras.utils.get_file("aclImdb_v1", url,
-                                               untar=True, cache_dir='.',
+                                               untar=True, cache_dir=os.path.join(os.getcwd(), dataset_path),
                                                cache_subdir='')
 
         """
         ## Set paths to the directory's
         """
 
-        dataset_dir = os.path.join(os.path.dirname(self.dataset), 'aclImdb')
-        train_dir = os.path.join(dataset_dir, 'train')
+        self.dataset_dir = os.path.join(dataset_path, 'aclImdb')
+        self.train_dir = os.path.join(self.dataset_dir, 'train')
+        self.test_dir = os.path.join(self.dataset_dir, 'test')
 
         """
         ## Remove unused directory
         """
 
-        remove_dir = os.path.join(train_dir, 'unsup')
+        remove_dir = os.path.join(self.train_dir, 'unsup')
         shutil.rmtree(remove_dir)
 
         """
@@ -52,21 +57,21 @@ class IMDB:
     def split_datasets(self):
         batch_size = 32
         self.raw_train_ds = tf.keras.preprocessing.text_dataset_from_directory(
-            "aclImdb/train",
+            self.train_dir,
             batch_size=batch_size,
             validation_split=0.2,
             subset="training",
             seed=1337,
         )
         self.raw_val_ds = tf.keras.preprocessing.text_dataset_from_directory(
-            "aclImdb/train",
+            self.train_dir,
             batch_size=batch_size,
             validation_split=0.2,
             subset="validation",
             seed=1337,
         )
         self.raw_test_ds = tf.keras.preprocessing.text_dataset_from_directory(
-            "aclImdb/test", batch_size=batch_size
+            self.test_dir, batch_size=batch_size
         )
 
     def get_train_set(self) -> tf.data.Dataset:

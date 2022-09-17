@@ -12,7 +12,6 @@ raw_train_ds = imdb_data.get_train_set()
 raw_val_ds = imdb_data.get_val_set()
 raw_test_ds = imdb_data.get_test_set()
 
-
 """
 ## Prepare the data
 
@@ -22,6 +21,7 @@ In particular, we remove `<br />` tags.
 from tensorflow.keras.layers import TextVectorization
 import string
 import re
+
 
 # Having looked at our data above, we see that the raw text contains HTML break
 # tags of the form '<br />'. These tags will not be removed by the default
