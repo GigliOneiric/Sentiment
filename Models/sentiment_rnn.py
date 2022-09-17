@@ -1,103 +1,17 @@
-"""
-Title: Text classification from scratch
-Authors: Mark Omernick, Francois Chollet
-Date created: 2019/11/06
-Last modified: 2020/05/17
-Description: Text sentiment classification starting from raw text files.
-"""
-"""
-## Introduction
-
-This example shows how to do text classification starting from raw text (as
-a set of text files on disk). We demonstrate the workflow on the IMDB sentiment
-classification dataset (unprocessed version). We use the `TextVectorization` layer for
- word splitting & indexing.
-"""
-
-"""
-## Setup
-"""
-
 import tensorflow as tf
-import os
-import shutil
-import numpy as np
+
+from Data.IMDB import IMDB
 
 """
-## Load the data: IMDB movie review sentiment classification
-
-Let's download the data and inspect its structure.
+## Load the dataset
 """
 
-url = "https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz"
+imdb_data = IMDB()
 
-dataset = tf.keras.utils.get_file("aclImdb_v1", url,
-                                          untar=True, cache_dir='.',
-                                          cache_subdir='')
+raw_train_ds = imdb_data.get_train_set()
+raw_val_ds = imdb_data.get_val_set()
+raw_test_ds = imdb_data.get_test_set()
 
-dataset_dir = os.path.join(os.path.dirname(dataset), 'aclImdb')
-train_dir = os.path.join(dataset_dir, 'train')
-remove_dir = os.path.join(train_dir, 'unsup')
-shutil.rmtree(remove_dir)
-"""
-You can use the utility `tf.keras.preprocessing.text_dataset_from_directory` to
-generate a labeled `tf.data.Dataset` object from a set of text files on disk filed
- into class-specific folders.
-
-Let's use it to generate the training, validation, and test datasets. The validation
-and training datasets are generated from two subsets of the `train` directory, with 20%
-of samples going to the validation dataset and 80% going to the training dataset.
-
-Having a validation dataset in addition to the test dataset is useful for tuning
-hyperparameters, such as the model architecture, for which the test dataset should not
-be used.
-
-Before putting the model out into the real world however, it should be retrained using all
-available training data (without creating a validation dataset), so its performance is maximized.
-
-When using the `validation_split` & `subset` arguments, make sure to either specify a
-random seed, or to pass `shuffle=False`, so that the validation & training splits you
-get have no overlap.
-
-"""
-
-batch_size = 32
-raw_train_ds = tf.keras.preprocessing.text_dataset_from_directory(
-    "aclImdb/train",
-    batch_size=batch_size,
-    validation_split=0.2,
-    subset="training",
-    seed=1337,
-)
-raw_val_ds = tf.keras.preprocessing.text_dataset_from_directory(
-    "aclImdb/train",
-    batch_size=batch_size,
-    validation_split=0.2,
-    subset="validation",
-    seed=1337,
-)
-raw_test_ds = tf.keras.preprocessing.text_dataset_from_directory(
-    "aclImdb/test", batch_size=batch_size
-)
-
-print(f"Number of batches in raw_train_ds: {raw_train_ds.cardinality()}")
-print(f"Number of batches in raw_val_ds: {raw_val_ds.cardinality()}")
-print(f"Number of batches in raw_test_ds: {raw_test_ds.cardinality()}")
-
-"""
-Let's preview a few samples:
-"""
-
-# It's important to take a look at your raw data to ensure your normalization
-# and tokenization will work as expected. We can do that by taking a few
-# examples from the training set and looking at them.
-# This is one of the places where eager execution shines:
-# we can just evaluate these tensors using .numpy()
-# instead of needing to evaluate them in a Session/Graph context.
-for text_batch, label_batch in raw_train_ds.take(1):
-    for i in range(5):
-        print(text_batch.numpy()[i])
-        print(label_batch.numpy()[i])
 
 """
 ## Prepare the data
