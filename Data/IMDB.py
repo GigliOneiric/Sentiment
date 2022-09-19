@@ -27,7 +27,6 @@ class IMDB:
         url = "https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz"
 
         dataset_path = os.path.join(os.path.join(os.path.join(Path(os.getcwd()).parent.parent, 'Data'), 'Datasets'))
-        print(dataset_path)
 
         self.dataset = tf.keras.utils.get_file("aclImdb_v1", url,
                                                untar=True, cache_dir=dataset_path,
