@@ -7,6 +7,7 @@ import TextPreprocessing.TextPreprocess
 
 
 class Vectorization:
+
     def __init__(self, raw_train_ds, max_features, embedding_dim, sequence_length):
         self.raw_train_ds = raw_train_ds
         self.max_features = max_features

@@ -26,7 +26,7 @@ class IMDB:
 
         url = "https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz"
 
-        dataset_path = os.path.join(os.path.join(os.path.join(Path(os.getcwd()).parent.parent, 'Data'), 'Datasets'))
+        dataset_path = os.path.join(os.path.join(os.path.join(Path(os.getcwd()), 'Data'), 'Datasets'))
 
         self.dataset = tf.keras.utils.get_file("aclImdb_v1", url,
                                                untar=True, cache_dir=dataset_path,
@@ -45,7 +45,9 @@ class IMDB:
         """
 
         remove_dir = os.path.join(self.train_dir, 'unsup')
-        shutil.rmtree(remove_dir)
+
+        if os.path.isdir(remove_dir):
+            shutil.rmtree(remove_dir)
 
         """
         The utility `tf.keras.preprocessing.text_dataset_from_directory` is used to
