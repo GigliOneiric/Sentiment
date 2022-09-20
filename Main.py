@@ -2,10 +2,10 @@ import tensorflow as tf
 import string
 from Data.IMDB import IMDB
 from Models.Vectorization import Vectorization
-from Models.Architectures import CNN
-from Models.Architectures import RNN
-from Models.Architectures import LSTM
-from Models.Architectures import GRU
+from Models.Architectures import SIMPLE_CNN
+from Models.Architectures import SIMPLE_RNN
+from Models.Architectures import SIMPLE_LSTM
+from Models.Architectures import SIMPLE_GRU
 
 """
 ## Load the dataset
@@ -44,5 +44,5 @@ test_ds = test_ds.cache().prefetch(buffer_size=10)
 ## Build a model
 
 """
-GRU = GRU.GRU(max_features, embedding_dim, Vectorization, hidden_layers, raw_test_ds, test_ds, train_ds, val_ds)
-GRU.create_gru()
+SIMPLE_GRU = SIMPLE_GRU.SIMPLE_GRU(max_features, embedding_dim, Vectorization, hidden_layers, raw_test_ds, test_ds, train_ds, val_ds)
+SIMPLE_GRU.create_gru()

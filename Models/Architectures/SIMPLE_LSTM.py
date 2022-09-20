@@ -1,10 +1,10 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers
-from keras.layers import Dense, Activation, GRU
+from keras.layers import Dense, Activation, LSTM
 
 
-class RNN:
+class SIMPLE_LSTM:
 
     def __init__(self, max_features, embedding_dim, Vectorization, hidden_layers, raw_test_ds, test_ds, train_ds,
                  val_ds):
@@ -20,7 +20,7 @@ class RNN:
 
         self.hidden_layers = hidden_layers
 
-    def create_gru(self):
+    def create_lstm(self):
         # A integer input for vocab indices.
         inputs = tf.keras.Input(shape=(None,), dtype="int64")
 
@@ -32,9 +32,9 @@ class RNN:
         # Next, we add the RNN
         if self.hidden_layers > 1:
             for i in range(1, self.hidden_layers):
-                x = GRU(units=60, return_sequences=True)(x)
+                x = LSTM(units=60, return_sequences=True)(x)
 
-        x = GRU(units=60)(x)
+        x = LSTM(units=60)(x)
 
         # After the RNN has converted the sequence to a single vector the two layers.Dense do some final processing,
         # and convert from this vector representation to a single logit as the classification output.

@@ -1,12 +1,12 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers
+from keras.layers import SimpleRNN, Dense, Activation
 
 
-class CNN:
+class SIMPLE_RNN:
 
-    def __init__(self, max_features, embedding_dim, Vectorization, hidden_layers, raw_test_ds, test_ds, train_ds,
-                 val_ds):
+    def __init__(self, max_features, embedding_dim, Vectorization, hidden_layers, raw_test_ds, test_ds, train_ds, val_ds):
         self.raw_test_ds = raw_test_ds
         self.test_ds = test_ds
         self.train_ds = train_ds
@@ -19,7 +19,7 @@ class CNN:
 
         self.hidden_layers = hidden_layers
 
-    def create_cnn(self):
+    def create_rnn(self):
         # A integer input for vocab indices.
         inputs = tf.keras.Input(shape=(None,), dtype="int64")
 
@@ -28,15 +28,17 @@ class CNN:
         x = layers.Embedding(self.max_features, self.embedding_dim)(inputs)
         x = layers.Dropout(0.5)(x)
 
-        # Conv1D + global max pooling
-        for i in range(self.hidden_layers):
-            x = layers.Conv1D(128, 7, padding="valid", activation="relu", strides=3)(x)
+        # Next, we add the RNN
+        if self.hidden_layers > 1:
+            for i in range(1, self.hidden_layers):
+                x = SimpleRNN(units=60, return_sequences=True)(x)
 
-        x = layers.GlobalMaxPooling1D()(x)
+        x = SimpleRNN(units=60)(x)
 
-        # We add a vanilla hidden layer:
-        x = layers.Dense(128, activation="relu")(x)
-        x = layers.Dropout(0.5)(x)
+        # After the RNN has converted the sequence to a single vector the two layers.Dense do some final processing,
+        # and convert from this vector representation to a single logit as the classification output.
+        x = Dense(units=60)(x)
+        x = Activation("relu")(x)
 
         # We project onto a single unit output layer, and squash it with a sigmoid:
         predictions = layers.Dense(1, activation="sigmoid", name="predictions")(x)
