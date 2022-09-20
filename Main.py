@@ -4,6 +4,8 @@ from Data.IMDB import IMDB
 from Models.Vectorization import Vectorization
 from Models.Architectures import CNN
 from Models.Architectures import RNN
+from Models.Architectures import LSTM
+from Models.Architectures import GRU
 
 """
 ## Load the dataset
@@ -42,5 +44,5 @@ test_ds = test_ds.cache().prefetch(buffer_size=10)
 ## Build a model
 
 """
-RNN = RNN.RNN(max_features, embedding_dim, Vectorization, hidden_layers, raw_test_ds, test_ds, train_ds, val_ds)
-RNN.create_rnn()
+GRU = GRU.GRU(max_features, embedding_dim, Vectorization, hidden_layers, raw_test_ds, test_ds, train_ds, val_ds)
+GRU.create_gru()
