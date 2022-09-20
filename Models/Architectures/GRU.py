@@ -1,12 +1,13 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers
-from keras.layers import SimpleRNN, Dense, Activation
+from keras.layers import Dense, Activation, GRU
 
 
 class RNN:
 
-    def __init__(self, max_features, embedding_dim, Vectorization, hidden_layers, raw_test_ds, test_ds, train_ds, val_ds):
+    def __init__(self, max_features, embedding_dim, Vectorization, hidden_layers, raw_test_ds, test_ds, train_ds,
+                 val_ds):
         self.raw_test_ds = raw_test_ds
         self.test_ds = test_ds
         self.train_ds = train_ds
@@ -19,7 +20,7 @@ class RNN:
 
         self.hidden_layers = hidden_layers
 
-    def create_rnn(self):
+    def create_gru(self):
         # A integer input for vocab indices.
         inputs = tf.keras.Input(shape=(None,), dtype="int64")
 
@@ -31,9 +32,9 @@ class RNN:
         # Next, we add the RNN
         if self.hidden_layers > 1:
             for i in range(1, self.hidden_layers):
-                x = SimpleRNN(units=60, return_sequences=True)(x)
+                x = GRU(units=60, return_sequences=True)(x)
 
-        x = SimpleRNN(units=60)(x)
+        x = GRU(units=60)(x)
 
         # After the RNN has converted the sequence to a single vector the two layers.Dense do some final processing,
         # and convert from this vector representation to a single logit as the classification output.
@@ -65,7 +66,7 @@ class RNN:
 
         """
         ## Make an end-to-end model
-        
+
         If you want to obtain a model capable of processing raw strings, you can simply
         create a new model (using the weights we just trained):
         """

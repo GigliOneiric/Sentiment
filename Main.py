@@ -2,6 +2,7 @@ import tensorflow as tf
 import string
 from Data.IMDB import IMDB
 from Models.Vectorization import Vectorization
+from Models.Architectures import CNN
 from Models.Architectures import RNN
 
 """
@@ -25,6 +26,7 @@ sequence_length = 500
 Vectorization = Vectorization.Vectorization(raw_train_ds, max_features, embedding_dim, sequence_length)
 vectorize_text = Vectorization.vectorize_text
 
+hidden_layers = 2
 
 # Vectorize the data.
 train_ds = raw_train_ds.map(vectorize_text)
@@ -40,5 +42,5 @@ test_ds = test_ds.cache().prefetch(buffer_size=10)
 ## Build a model
 
 """
-RNN = RNN.RNN(max_features, embedding_dim, Vectorization, raw_test_ds, test_ds, train_ds, val_ds)
+RNN = RNN.RNN(max_features, embedding_dim, Vectorization, hidden_layers, raw_test_ds, test_ds, train_ds, val_ds)
 RNN.create_rnn()
