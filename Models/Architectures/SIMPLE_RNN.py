@@ -2,12 +2,13 @@ import tensorflow as tf
 from tensorflow.keras import layers
 from keras.layers import SimpleRNN
 
+from Models.Architectures.Layers.Embeddings import Embeddings
 from Models.Architectures.Layers.Output.Prediction import create_prediction_layer
 
 
 class SIMPLE_RNN:
 
-    def __init__(self, max_features, embedding_dim, sequence_length, hidden_layers, rec_units, dense_units, dropout,
+    def __init__(self, max_features, embedding_type, embedding_dim, sequence_length, hidden_layers, rec_units, dense_units, dropout,
                  raw_test_ds, test_ds, train_ds, val_ds):
         self.raw_test_ds = raw_test_ds
         self.test_ds = test_ds
@@ -15,6 +16,7 @@ class SIMPLE_RNN:
         self.val_ds = val_ds
 
         self.max_features = max_features
+        self.embedding_type = embedding_type
         self.embedding_dim = embedding_dim
         self.sequence_length = sequence_length
 
@@ -29,9 +31,9 @@ class SIMPLE_RNN:
 
         # Next, we add a layer to map those vocab indices into a space of dimensionality
         # 'embedding_dim'.
-        x = layers.Embedding(input_dim=self.max_features,
-                             output_dim=self.embedding_dim,
-                             input_length=self.sequence_length)(inputs)
+        x = Embeddings.choose_embeddings(self.max_features, self.embedding_dim, self.sequence_length,
+                                         self.vectorization_layer, inputs)
+
         x = layers.Dropout(self.dropout)(x)
 
         # Next, we add the RNN

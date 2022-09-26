@@ -22,6 +22,7 @@ raw_test_ds = imdb_data.get_test_set()
 """
 
 max_features = 10000
+embedding_type = "glove"
 embedding_dim = 300
 sequence_length = 500
 
@@ -46,11 +47,11 @@ rec_units = 128
 dense_units = 128
 dropout = 0.5
 
-SIMPLE_GRU = SIMPLE_GRU(max_features, embedding_dim, sequence_length,
-                        hidden_layers, rec_units, dense_units, dropout,
+SIMPLE_CNN = SIMPLE_CNN(max_features, embedding_type, embedding_dim, sequence_length, vectorization_layer.get_vectorize_layer(),
+                        hidden_layers, 128, 7, dense_units, dropout,
                         raw_test_ds, test_ds, train_ds, val_ds)
 
-model = SIMPLE_GRU.create_gru()
+model = SIMPLE_CNN.create_cnn()
 
 """
 ## Train the model
@@ -73,6 +74,7 @@ end_to_end_model = Export.build_end_to_end_model(model, vectorization_layer)
 
 sample_text = ('Tesla is so cool'
                'The stock is super')
+
 sentiment = end_to_end_model.predict(np.array([sample_text]))
 
 # If the prediction is >= 0.0, it is positive else it is negative.

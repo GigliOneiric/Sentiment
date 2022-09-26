@@ -1,12 +1,13 @@
 import tensorflow as tf
 from tensorflow.keras import layers
 
+from Models.Architectures.Layers.Embeddings import Embeddings
 from Models.Architectures.Layers.Output.Prediction import create_prediction_layer
 
 
 class SIMPLE_CNN:
 
-    def __init__(self, max_features, embedding_dim, sequence_length,
+    def __init__(self, max_features, embedding_type, embedding_dim, sequence_length, vectorization_layer,
                  hidden_layers, filters, kernel_size, dense_units, dropout,
                  raw_test_ds, test_ds, train_ds, val_ds):
         self.raw_test_ds = raw_test_ds
@@ -15,8 +16,11 @@ class SIMPLE_CNN:
         self.val_ds = val_ds
 
         self.max_features = max_features
+        self.embedding_type = embedding_type
         self.embedding_dim = embedding_dim
         self.sequence_length = sequence_length
+
+        self.vectorization_layer = vectorization_layer
 
         self.hidden_layers: int = hidden_layers
         self.filters: int = filters
@@ -30,9 +34,8 @@ class SIMPLE_CNN:
 
         # Next, we add a layer to map those vocab indices into a space of dimensionality
         # 'embedding_dim'.
-        x = layers.Embedding(input_dim=self.max_features,
-                             output_dim=self.embedding_dim,
-                             input_length=self.sequence_length)(inputs)
+        x = Embeddings.choose_embeddings(self.max_features, self.embedding_dim, self.sequence_length,
+                                         self.vectorization_layer, inputs, embedding_type)
 
         x = layers.Dropout(self.dropout)(x)
 
