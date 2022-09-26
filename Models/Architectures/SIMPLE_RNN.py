@@ -8,7 +8,8 @@ from Models.Architectures.Layers.Output.Prediction import create_prediction_laye
 
 class SIMPLE_RNN:
 
-    def __init__(self, max_features, embedding_type, embedding_dim, sequence_length, hidden_layers, rec_units, dense_units, dropout,
+    def __init__(self, max_features, embedding_type, embedding_dim, sequence_length, vectorization_layer,
+                 hidden_layers, rec_units, dense_units, dropout,
                  raw_test_ds, test_ds, train_ds, val_ds):
         self.raw_test_ds = raw_test_ds
         self.test_ds = test_ds
@@ -19,6 +20,8 @@ class SIMPLE_RNN:
         self.embedding_type = embedding_type
         self.embedding_dim = embedding_dim
         self.sequence_length = sequence_length
+
+        self.vectorization_layer = vectorization_layer
 
         self.hidden_layers: int = hidden_layers
         self.rec_units: int = rec_units
