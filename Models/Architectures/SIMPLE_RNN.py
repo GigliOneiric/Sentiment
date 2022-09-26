@@ -35,7 +35,7 @@ class SIMPLE_RNN:
         # Next, we add a layer to map those vocab indices into a space of dimensionality
         # 'embedding_dim'.
         x = Embeddings.choose_embeddings(self.max_features, self.embedding_dim, self.sequence_length,
-                                         self.vectorization_layer, inputs)
+                                         self.vectorization_layer, inputs, self.embedding_type)
 
         x = layers.Dropout(self.dropout)(x)
 
