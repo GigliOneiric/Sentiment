@@ -6,7 +6,8 @@ from Models.Architectures.Layers.Output.Prediction import create_prediction_laye
 
 class SIMPLE_CNN:
 
-    def __init__(self, max_features, embedding_dim, Vectorization, hidden_layers, dense_units, dropout,
+    def __init__(self, max_features, embedding_dim, sequence_length,
+                 hidden_layers, filters, kernel_size, dense_units, dropout,
                  raw_test_ds, test_ds, train_ds, val_ds):
         self.raw_test_ds = raw_test_ds
         self.test_ds = test_ds
@@ -15,10 +16,11 @@ class SIMPLE_CNN:
 
         self.max_features = max_features
         self.embedding_dim = embedding_dim
-
-        self.Vectorization = Vectorization
+        self.sequence_length = sequence_length
 
         self.hidden_layers: int = hidden_layers
+        self.filters: int = filters
+        self.kernel_size: int = kernel_size
         self.dense_units: int = dense_units
         self.dropout: float = dropout
 
@@ -28,12 +30,15 @@ class SIMPLE_CNN:
 
         # Next, we add a layer to map those vocab indices into a space of dimensionality
         # 'embedding_dim'.
-        x = layers.Embedding(self.max_features, self.embedding_dim)(inputs)
+        x = layers.Embedding(input_dim=self.max_features,
+                             output_dim=self.embedding_dim,
+                             input_length=self.sequence_length)(inputs)
+
         x = layers.Dropout(self.dropout)(x)
 
         # Conv1D + global max pooling
         for i in range(self.hidden_layers):
-            x = layers.Conv1D(128, 7, padding="valid", activation="relu", strides=3)(x)
+            x = layers.Conv1D(self.filters, self.kernel_size, padding="valid", activation="relu", strides=3)(x)
 
         x = layers.GlobalMaxPooling1D()(x)
 
