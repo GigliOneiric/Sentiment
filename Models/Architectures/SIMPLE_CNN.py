@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras import layers
 
-from Models.Layers.Output.Prediction import create_prediction_layer
+from Models.Architectures.Layers.Output.Prediction import create_prediction_layer
 
 
 class SIMPLE_CNN:

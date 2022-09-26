@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow.keras import layers
 from keras.layers import GRU
 
-from Models.Layers.Output.Prediction import create_prediction_layer
+from Models.Architectures.Layers.Output.Prediction import create_prediction_layer
 
 
 class SIMPLE_GRU:
