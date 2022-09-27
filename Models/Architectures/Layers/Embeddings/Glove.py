@@ -1,5 +1,5 @@
 import os
-
+import zipfile
 import numpy as np
 import tensorflow as tf
 
@@ -22,20 +22,20 @@ def glove(max_features, embedding_dim, sequence_length, vectorization_layer: Tex
 
 
 def download_glove():
-    url = "https://nlp.stanford.edu/data/glove.840B.300d.zip"
-
     glove_path = os.path.join(os.path.join(os.path.join(Path(os.getcwd()), 'Data'), 'Datasets'))
-
-    tf.keras.utils.get_file("glove.840B.300d", url,
-                            untar=True, cache_dir=glove_path,
-                            cache_subdir='')
-
-
-    """
-    ## Set paths to the directory's
-    """
-
     glove_dir = os.path.join(glove_path, 'glove.840B.300d')
+    glove_file = os.path.join(glove_path, 'glove.840B.300d.tar.gz')
+
+    if not os.path.exists(glove_file):
+        url = "https://nlp.stanford.edu/data/glove.840B.300d.zip"
+
+        tf.keras.utils.get_file("glove.840B.300d", url,
+                                untar=True, cache_dir=glove_path,
+                                cache_subdir='')
+
+        with zipfile.ZipFile(glove_file, 'r') as zip_ref:
+            zip_ref.extractall(glove_dir)
+
     glove_file = os.path.join(glove_dir, 'glove.840B.300d.txt')
 
     return glove_file

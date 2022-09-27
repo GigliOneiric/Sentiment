@@ -60,7 +60,7 @@ class IMDB:
         """
 
     def split_datasets(self):
-        batch_size = 1
+        batch_size = 32
         self.raw_train_ds = tf.keras.preprocessing.text_dataset_from_directory(
             self.train_dir,
             batch_size=batch_size,

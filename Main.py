@@ -47,7 +47,8 @@ rec_units = 128
 dense_units = 128
 dropout = 0.5
 
-SIMPLE_GRU = SIMPLE_GRU(max_features, embedding_type, embedding_dim, sequence_length, vectorization_layer.get_vectorize_layer(),
+SIMPLE_GRU = SIMPLE_GRU(max_features, embedding_type, embedding_dim, sequence_length,
+                        vectorization_layer.get_vectorize_layer(),
                         hidden_layers, rec_units, dense_units, dropout,
                         raw_test_ds, test_ds, train_ds, val_ds)
 
@@ -73,8 +74,7 @@ end_to_end_model = Export.build_end_to_end_model(model, vectorization_layer)
 ## Play with the final model
 """
 
-sample_text = ('Tesla is so cool'
-               'The stock is super')
+sample_text = 'Tesla is nice as shit'
 
 sentiment = end_to_end_model.predict(np.array([sample_text]))
 
