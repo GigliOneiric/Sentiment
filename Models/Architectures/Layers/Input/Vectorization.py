@@ -27,7 +27,7 @@ class Vectorization:
         # model won't support ragged sequences.
 
         self.vectorize_layer = TextVectorization(
-            standardize=TextPreprocessing.TextPreprocess.preprocess,
+            standardize=None,
             max_tokens=self.max_features,
             output_mode="int",
             output_sequence_length=self.sequence_length,

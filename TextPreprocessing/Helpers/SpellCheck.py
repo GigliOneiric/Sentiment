@@ -18,4 +18,5 @@ def check_spelling(input_text_or_list: Union[str, List[str]], lang='en'):
     misspelled = spelling_checker.unknown(tokens)
     for word in misspelled:
         tokens[tokens.index(word)] = spelling_checker.correction(word)
-    return ' '.join(tokens).strip()
+
+    return ' '.join(filter(None, tokens)).strip()

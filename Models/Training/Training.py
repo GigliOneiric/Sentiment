@@ -1,18 +1,18 @@
-from Utils import utils
+from Utils import early_stopping
 
 
-def train_model(model, epochs, train_ds, val_ds, test_ds, early_stopping, batch_size):
+def train_model(model, epochs, train_ds, val_ds, test_ds, es, batch_size):
     """
      ## Train the model
     """
 
-    if early_stopping:
-        early_stopping = utils.es_callback
+    if es:
+        es = early_stopping.es_callback
     else:
-        early_stopping = None
+        es = None
 
     # Fit the model using the train and test datasets.
-    model.fit(train_ds, validation_data=val_ds, epochs=epochs, callbacks=early_stopping, batch_size=batch_size)
+    model.fit(train_ds, validation_data=val_ds, epochs=epochs, callbacks=es, batch_size=batch_size)
 
     """
     ## Evaluate the model on the test set
