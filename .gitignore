@@ -3,6 +3,6 @@
 !**/wandb/settings
 **/__pycache__
 **/.ipynb_checkpoints
-**/glove*
 **/aclImdb/
 *.tar.gz
+*.txt

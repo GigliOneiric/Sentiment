@@ -58,9 +58,10 @@ model = SIMPLE_GRU.create_gru()
 """
 
 epochs = 100
+batch_size = 512
 
 model = Training.train_model(model, epochs,
-                             train_ds, val_ds, test_ds, True)
+                             train_ds, val_ds, test_ds, True, batch_size)
 
 """
 ## Build the final model
