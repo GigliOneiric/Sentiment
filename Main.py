@@ -3,6 +3,7 @@ import numpy as np
 from Data.IMDB import IMDB
 from Models.Architectures.Layers.Input import Vectorization
 from Models.Architectures.SIMPLE_GRU import SIMPLE_GRU
+from Models.Architectures.SIMPLE_BiGRU import SIMPLE_BiGRU
 from Models.Architectures.SIMPLE_CNN import SIMPLE_CNN
 from Models.Training import Training
 from Models.Export import Export
@@ -47,12 +48,12 @@ rec_units = 128
 dense_units = 128
 dropout = 0.5
 
-SIMPLE_GRU = SIMPLE_GRU(max_features, embedding_type, embedding_dim, sequence_length,
-                        vectorization_layer.get_vectorize_layer(),
-                        hidden_layers, rec_units, dense_units, dropout,
-                        raw_test_ds, test_ds, train_ds, val_ds)
+SIMPLE_BiGRU = SIMPLE_BiGRU(max_features, embedding_type, embedding_dim, sequence_length,
+                            vectorization_layer.get_vectorize_layer(),
+                            rec_units, dense_units, dropout,
+                            raw_test_ds, test_ds, train_ds, val_ds)
 
-model = SIMPLE_GRU.create_gru()
+model = SIMPLE_BiGRU.create_bigru()
 
 """
 ## Train the model
