@@ -2,11 +2,11 @@ apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
   name: add-header
-  namespace: mynamespace
+  namespace: kubeflow-user-example-com
 spec:
   workloadSelector:
     labels:
-      notebook-name: mynotebook
+      notebook-name: kubeflow-sentiement
   configPatches:
   - applyTo: HTTP_FILTER
     match:
