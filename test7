@@ -2,7 +2,7 @@ apiVersion: rbac.istio.io/v1alpha1
 kind: ServiceRoleBinding
 metadata:
   name: bind-ml-pipeline-nb-kubeflow-user-example-com
-  namespace: kubeflow
+  namespace: kubeflow-user-example-com
 spec:
   roleRef:
     kind: ServiceRole
