@@ -1,6 +1,9 @@
+import os
+from pathlib import Path
+
 import numpy as np
 
-from Data.IMDB import IMDB
+from Data.Dataset import Dataset
 from Models.Architectures.Layers.Input import Vectorization
 from Models.Architectures.SIMPLE_GRU import SIMPLE_GRU
 from Models.Architectures.SIMPLE_BiGRU import SIMPLE_BiGRU
@@ -12,11 +15,18 @@ from Models.Export import Export
 ## Load the dataset
 """
 
-imdb_data = IMDB()
 
-raw_train_ds = imdb_data.get_train_set()
-raw_val_ds = imdb_data.get_val_set()
-raw_test_ds = imdb_data.get_test_set()
+
+dataset_path = os.path.join(os.path.join(os.path.join(Path(os.getcwd()), 'Data'), 'Datasets'))
+dataset_dir = os.path.join(dataset_path, 'aclImdb')
+train_dir = os.path.join(dataset_dir, 'train')
+test_dir = os.path.join(dataset_dir, 'test')
+
+data = Dataset(dataset_path, dataset_dir, train_dir, test_dir)
+
+raw_train_ds = data.get_train_set()
+raw_val_ds = data.get_val_set()
+raw_test_ds = data.get_test_set()
 
 """
 ## Prepare the data

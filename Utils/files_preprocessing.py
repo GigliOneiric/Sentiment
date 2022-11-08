@@ -1,7 +1,6 @@
-import fileinput, sys, os
+import os
 from pathlib import Path
 
-import TextPreprocessing.TextPreprocess
 from TextPreprocessing import TextPreprocess
 
 
