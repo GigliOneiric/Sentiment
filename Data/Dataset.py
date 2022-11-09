@@ -49,7 +49,7 @@ class Dataset:
             os.makedirs(self.test_neg_dir)
 
     def load_datasets(self):
-        #IMDB(self.dataset_path, self.dataset_dir, self.train_dir, self.test_dir)
+        IMDB(self.dataset_path, self.dataset_dir, self.train_dir, self.test_dir)
         FinancialPhrasebank(self.dataset_path, self.dataset_dir, self.train_dir, self.test_dir,
                             self.train_pos_dir, self.train_neg_dir,
                             self.test_pos_dir, self.test_neg_dir)
